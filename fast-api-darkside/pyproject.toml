@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fast-api-darkside"
+version = "0.1.0"
+description = ""
+authors = ["gzhhggg <keiichimonoo@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.109.1"
+tortoise-orm = "^0.20.0"
+fastapi-admin = "^1.0.4"
+uvicorn = "^0.27.0.post1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
