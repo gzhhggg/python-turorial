@@ -7,8 +7,9 @@
 
 ## 学んだこと
 
-基本的な動作
-pydantic の型ヒントの使用方法
-fast-api の基本操作
-sqlalchemy
-pytest の動作方法
+- 基本的な動作
+- pydantic の型ヒントの使用方法
+- fast-api の基本操作
+- sqlalchemy
+- pytest の動作方法
+- データベースの接続とDBモデル
