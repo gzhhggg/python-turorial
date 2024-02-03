@@ -10,3 +10,4 @@
 基本的な動作
 pydantic の型ヒントの重要性
 fast-api の便利さ`/docs`が便利
+sqlalchemy
