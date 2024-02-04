@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from typing import List
 import app.cruds.client as client_crud
 import app.schemas.client as client_schema
