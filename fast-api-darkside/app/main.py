@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from app.routers import client
-from .config import TORTOISE_ORM
+from app.config.db import DB_CONFIG
 
 app = FastAPI()
 
 register_tortoise(
     app,
-    config=TORTOISE_ORM,
+    config=DB_CONFIG,
     generate_schemas=True,  # スタートアップ時にスキーマを自動生成
     add_exception_handlers=True,
 )

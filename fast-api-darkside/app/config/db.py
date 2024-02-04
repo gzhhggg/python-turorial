@@ -1,7 +1,7 @@
 ## TORTOISE_ORMの設定情報
 # TODO:本番と開発で管理できるようにする
 
-TORTOISE_ORM = {
+DB_CONFIG = {
     "connections": {
         # "default" は Tortoise-ORM 内で使用する接続名です。
         "default": "mysql://docker:docker@localhost:33071/database"
