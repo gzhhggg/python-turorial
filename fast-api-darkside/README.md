@@ -82,7 +82,7 @@ CRUD 操作は、モデルとデータベースの間のインターフェース
 ## poetry コマンド
 
 仮想環境作成
-`petry init`
+`poetry init`
 
 仮想環境に入る
 `poetry shell`
@@ -97,9 +97,12 @@ poetry add tortoise-orm
 
 poerty で追加したライブラリ達
 
-- aiomysql #これ要らなかったかも
-- aerich # tortoise-orm のマイグレーションログを残すライブラリ（なんか使えなかった）
-- email-validator #schema でメールアドレスのバリデーションが使える
+```
+poetry add aiomysql
+poetry add aerich
+poetry add email-validator
+poetry add uvicorn
+```
 
 仮想環境に入っているか確認
 
@@ -140,3 +143,57 @@ aerich は Tortoise-ORM のためのマイグレーションツールであり�
 将来的には、dotenv ライブラリとか使用して本番・開発で管理する
 
 ### 細かいこと
+
+## 問題
+
+python3.12 では標準モジュールの distutils が存在しないため、エラーが発生する
+distutils は python プロジェクトのビルド、配布、インストールを容易にする
+
+```
+  from distutils.version import StrictVersion
+ModuleNotFoundError: No module named 'distutils'
+line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+```
+
+エラーが発生する条件： - pytest でエラーが発生する - fastapi-admin でエラーが発生する（aioredis を使用するときにエラーが発生するみたい） - distutils は 非推奨で、Python 3.12 での除去が予定されている
+[distutils に関する公式ドキュメント](https://docs.python.org/ja/3.10/library/distutils.html#module-distutils)
+
+対策：バージョン下げる 3.11 系が優秀という記事があったので一旦 3.11 で起動する
+
+python のバージョン下げる方法
+
+```
+## 仮想環境に入っている場合は一旦抜ける
+deactivate
+
+## 仮想環境を削除
+rm -rf .venv/
+
+asdf install python 3.11.7
+
+## python3.11.7でpoetryをインストール
+pip install poetry
+
+rm poetry.lock
+rm pyproject.toml
+
+poetry init
+
+## 仮想環境に再度入る
+poetry shell
+```
+
+aioredis が python3.11.7 でもサポートされてなかった。。。
+aioredis とは：Redis データベースと非同期に通信するためのライブラリです
+https://github.com/aio-libs-abandoned/aioredis-py
+
+というわけで別のライブラリを探す。
+fastapi-admin の公式では aioredis を使っている
+3.11 でもダメかもしれない
+https://github.com/fastapi-admin/fastapi-admin/issues/138
+
+fastapi admin が内部的に aioredis を使っていますので
+これじゃ無理ー
+
+3.10 系に下げるしかない。

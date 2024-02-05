@@ -6,19 +6,17 @@ authors = ["gzhhggg <keiichimonoo@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-fastapi = "^0.109.1"
-tortoise-orm = "^0.20.0"
+python = "^3.11"
+fastapi = "^0.109.2"
 fastapi-admin = "^1.0.4"
-uvicorn = "^0.27.0.post1"
+tortoise-orm = "^0.20.0"
 aiomysql = "^0.2.0"
 aerich = "^0.7.2"
 email-validator = "^2.1.0.post1"
+uvicorn = "^0.27.0.post1"
+redis = "^5.0.1"
 
-[tool.aerich]
-tortoise_orm = "app.config.TORTOISE_ORM"
-location = "./migrations"
-src_folder = "./."
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
