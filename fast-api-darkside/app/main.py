@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
-from app.routers import client
+from app.routers import client, project
 from app.config.db import DB_CONFIG
 
 app = FastAPI()
@@ -14,3 +14,4 @@ register_tortoise(
 
 
 app.include_router(client.router)
+app.include_router(project.router)

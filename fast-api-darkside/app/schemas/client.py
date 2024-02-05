@@ -18,7 +18,6 @@ class ClientCreateResponse(ClientCreate):
         orm_mode = True
 
 
-# クライアントを読み込む時に使用されるスキーマ（レスポンスモデル）
 class Client(ClientBase):
     id: int
     created_at: datetime
