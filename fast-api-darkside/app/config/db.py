@@ -13,7 +13,7 @@ DB_CONFIG = {
                 # TODO: models/__init__.pyで読み込むように設定する？
                 "app.models.client",
                 "app.models.project",
-                # "app.models.member",
+                "app.models.member",
                 # "aerich.models",
             ],
             "default_connection": "default",

@@ -1,5 +1,7 @@
 # fast_api を使った darkside アプリ作成
 
+後で整理する！！
+
 ## python 関係ない個人メモ(後で消す)
 
 md プレビューショートカット
@@ -95,8 +97,9 @@ poetry add tortoise-orm
 
 poerty で追加したライブラリ達
 
-- aiomysql
-- aerich
+- aiomysql #これ要らなかったかも
+- aerich # tortoise-orm のマイグレーションログを残すライブラリ（なんか使えなかった）
+- email-validator #schema でメールアドレスのバリデーションが使える
 
 仮想環境に入っているか確認
 
@@ -135,3 +138,5 @@ aerich は Tortoise-ORM のためのマイグレーションツールであり�
 ### データベース接続情報
 
 将来的には、dotenv ライブラリとか使用して本番・開発で管理する
+
+### 細かいこと
