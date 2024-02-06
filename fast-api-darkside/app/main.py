@@ -1,4 +1,3 @@
-import asyncio
 import uvicorn
 from fastapi import FastAPI
 from fastapi_admin.app import app as admin_app
@@ -6,15 +5,8 @@ from fastapi_admin.providers.login import UsernamePasswordProvider
 from tortoise.contrib.fastapi import register_tortoise
 from app.routers import client, project, member
 from app.config.db import DB_CONFIG
-from app.models import admin
-import redis.asyncio as redis
-
-
-async def get_redis_connection():
-    # Redisの非同期接続を作成するためのユーティリティ関数を定義する
-    return await redis.Redis(
-        host="redis", port=6379, db=0, decode_responses=True, encoding="utf-8"
-    )
+from app.models.admin import Admin
+import aioredis
 
 
 def create_app():
@@ -31,15 +23,15 @@ def create_app():
     @app.on_event("startup")
     async def startup():
         # 非同期Redisクライアントのインスタンスを取得
-        redis_connection = await get_redis_connection()
+        redis = await aioredis.from_url("redis://localhost", encoding="utf8")
         await admin_app.configure(
             logo_url="https://preview.tabler.io/static/logo-white.svg",
             providers=[
                 UsernamePasswordProvider(
-                    admin_model=admin.Admin,
+                    admin_model=Admin,
                 )
             ],
-            redis=redis_connection,
+            redis=redis,
         )
 
     return app

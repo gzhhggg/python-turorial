@@ -102,6 +102,8 @@ poetry add aiomysql
 poetry add aerich
 poetry add email-validator
 poetry add uvicorn
+# MySQLデータベースへの接続時に使用される認証方法
+pip install cryptography
 ```
 
 仮想環境に入っているか確認
@@ -145,6 +147,8 @@ aerich は Tortoise-ORM のためのマイグレーションツールであり�
 ### 細かいこと
 
 ## 問題
+
+fastapi-admin と pytest では distutils が必要になる
 
 python3.12 では標準モジュールの distutils が存在しないため、エラーが発生する
 distutils は python プロジェクトのビルド、配布、インストールを容易にする

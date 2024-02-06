@@ -15,6 +15,7 @@ DB_CONFIG = {
                 "app.models.client",
                 "app.models.project",
                 "app.models.member",
+                "app.models.admin",
                 # "aerich.models",
             ],
             "default_connection": "default",
