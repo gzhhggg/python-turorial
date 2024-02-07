@@ -7,7 +7,7 @@
       "request": "launch",
       "module": "uvicorn",
       "args": [
-        "app.main:app_", // プロジェクトのルートからの相対パスを使用
+        "app.main:app", // プロジェクトのルートからの相対パスを使用
         "--reload"
       ],
       "console": "integratedTerminal",

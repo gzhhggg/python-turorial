@@ -14,7 +14,7 @@ from fastapi_admin.resources import (
 )
 
 from .constants import BASE_DIR
-from .models import Admin
+from ..models.admin import Admin
 
 upload = FileUpload(uploads_dir=os.path.join(BASE_DIR, "static", "uploads"))
 

@@ -227,3 +227,41 @@ docker で起動している redis の IP を特定するコマンド
 ```
  docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' darkside_redis
 ```
+
+## fastapi-admin 導入後のディレクトリ構成
+
+```
+fast-api-darkside/
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py # FastAPI アプリケーション、ルーティング、FastAPI-Adminの設定
+│   ├── models/ # Tortoise ORM モデル
+│   │   ├── __init__.py
+│   │   ├── admin.py # FastAPI-Adminで使用するモデル
+│   │   └── ... # その他のモデル
+│   ├── schemas/ # Pydantic スキーマ
+│   │   ├── __init__.py
+│   │   └── ... # スキーマ
+│   ├── routers/ # ルーティングモジュール
+│   │   ├── __init__.py
+│   │   └── ... # その他のルーター
+│   ├── cruds/ # CRUD モジュール
+│   │   ├── __init__.py
+│   │   └── ... # CRUD操作
+│   ├── admin/ # FastAPI-Admin設定とカスタマイズ
+│   │   ├── __init__.py
+│   │   ├── admin.py # FastAPI-Adminの設定と初期化
+│   │   └── resources.py # FastAPI-Adminリソース定義
+│   └── config.py # 設定ファイル（DB設定含む）
+│
+├── static/ # 静的ファイル
+│   └── ... # CSS、JavaScript、画像など
+├── templates/ # Jinja2 テンプレート
+│   └── ... # HTMLテンプレートファイル
+├── migrations/ # マイグレーションファイル
+├── tests/ # テストケース
+├── .env # 環境変数と設定値
+├── pyproject.toml # poetry依存関係と設定
+└── README.md # プロジェクトの説明
+```
