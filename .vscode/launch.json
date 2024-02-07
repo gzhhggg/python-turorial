@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Uvicorn Server: app",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": [
+        "app.main:app_", // プロジェクトのルートからの相対パスを使用
+        "--reload"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/fast-api-darkside" // 作業ディレクトリを設定
+    }
+  ]
+}

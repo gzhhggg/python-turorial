@@ -1,6 +1,5 @@
 ## TORTOISE_ORMの設定情報
 # TODO:本番と開発で管理できるようにする
-import os
 
 DB_CONFIG = {
     "connections": {
@@ -24,5 +23,3 @@ DB_CONFIG = {
     "use_tz": True,  # タイムゾーンを設定する場合はTrue
     "timezone": "Asia/Tokyo",
 }
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))

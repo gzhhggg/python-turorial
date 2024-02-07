@@ -9,7 +9,7 @@ from starlette.requests import Request
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-@app.get("/dashboard")
+@app.get("/")
 async def home(
     request: Request,
     resources=Depends(get_resources),

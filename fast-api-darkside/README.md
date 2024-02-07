@@ -173,19 +173,37 @@ deactivate
 
 ## 仮想環境を削除
 rm -rf .venv/
-
-asdf install python 3.11.7
-
-## python3.11.7でpoetryをインストール
-pip install poetry
-
 rm poetry.lock
 rm pyproject.toml
 
+## 下記のフォルダにキャッシュが残ってる場合は削除する
+## pythonのバージョン変える時はこれ消す（恐らくプロジェクト配下に作成される）
+__pycache__
+
+asdf install python 3.10.11
+
+## python3.10.11でpoetryをインストール
+pip install poetry
+
+## 仮想環境を作成
 poetry init
 
 ## 仮想環境に再度入る
 poetry shell
+
+## 仮想環境に入ったか一応確認
+echo $VIRTUAL_ENV
+
+## 必要なライブラリ再インストール
+poetry add fastapi
+poetry add fastapi-admin
+poetry add tortoise-orm
+poetry add aiomysql
+poetry add aerich
+poetry add email-validator
+poetry add uvicorn
+.. etc
+
 ```
 
 aioredis が python3.11.7 でもサポートされてなかった。。。
@@ -201,3 +219,11 @@ fastapi admin が内部的に aioredis を使っていますので
 これじゃ無理ー
 
 3.10 系に下げるしかない。
+
+## redis
+
+docker で起動している redis の IP を特定するコマンド
+
+```
+ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' darkside_redis
+```

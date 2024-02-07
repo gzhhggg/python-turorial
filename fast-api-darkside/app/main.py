@@ -1,15 +1,19 @@
+import os
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi_admin.app import app as admin_app
 from fastapi_admin.providers.login import UsernamePasswordProvider
 from tortoise.contrib.fastapi import register_tortoise
-from app.routers import client, project, member
+
+# from app.routers import client, project, member
 from app.config.db import DB_CONFIG
 from app.models.admin import Admin
+from .constants import BASE_DIR
 import aioredis
 
 
-def create_app():
+def _create_app():
     app = FastAPI()
     app.mount("/admin", admin_app)
 
@@ -22,12 +26,12 @@ def create_app():
 
     @app.on_event("startup")
     async def startup():
-        # 非同期Redisクライアントのインスタンスを取得
-        redis = await aioredis.from_url("redis://localhost", encoding="utf8")
+        redis = await aioredis.from_url("redis://127.0.0.1:6379", encoding="utf8")
         await admin_app.configure(
-            logo_url="https://preview.tabler.io/static/logo-white.svg",
+            template_folders=[os.path.join(BASE_DIR, "templates")],
             providers=[
                 UsernamePasswordProvider(
+                    login_logo_url="https://preview.tabler.io/static/logo.svg",
                     admin_model=Admin,
                 )
             ],
@@ -37,10 +41,11 @@ def create_app():
     return app
 
 
-app_ = create_app()
+app = _create_app()
 
 if __name__ == "__main__":
-    uvicorn.run("main:app_", reload=True)
+    uvicorn.run("app.main:app", debug=True, reload=True)
+
 # app.include_router(client.router)
 # app.include_router(project.router)
-# app.include_router(member.router)
+# app.include_router(member.router)doi
