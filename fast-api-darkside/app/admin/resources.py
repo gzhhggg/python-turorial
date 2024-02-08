@@ -13,7 +13,15 @@ from fastapi_admin.resources import (
 )
 from fastapi_admin.widgets.filters import ForeignKey
 from .constants import BASE_DIR
-from ..models import Admin, Client, Member, Project, ProjectSlot, ProjectBudget
+from ..models import (
+    Admin,
+    Client,
+    Member,
+    Project,
+    ProjectSlot,
+    ProjectBudget,
+    ProjectMemberAssign,
+)
 
 
 @app.register
@@ -146,5 +154,30 @@ class MemberResource(Model):
         "name",
         Field(name="email", input_=inputs.Email()),
         "phone",
+        "created_at",
+    ]
+
+
+# ProjectMemberAssign
+@app.register
+class ProjectMemberAssignResource(Model):
+    label = "プロジェクトメンバーアサイン"
+    model = ProjectMemberAssign
+    icon = "fas fa-user-check"
+    fields = [
+        "id",
+        Field(
+            name="project_slot_id",
+            label="project_slot",
+            input_=inputs.ForeignKey(model=ProjectSlot),
+        ),
+        Field(
+            name="member_id",
+            label="member",
+            input_=inputs.ForeignKey(model=Member),
+        ),
+        Field(name="start_date", label="アサイン開始日", input_=inputs.Date()),
+        Field(name="end_date", label="アサイン終了日", input_=inputs.Date()),
+        Field(name="cost", label="コスト", input_=inputs.Number()),
         "created_at",
     ]

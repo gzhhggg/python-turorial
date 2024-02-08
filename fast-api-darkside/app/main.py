@@ -2,7 +2,14 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from .config.db import DB_CONFIG
 from .admin.main import configure_admin
-from app.routers import client, project, member, project_slot, project_budget
+from app.routers import (
+    client,
+    project,
+    member,
+    project_slot,
+    project_budget,
+    project_member_assign,
+)
 
 
 def create_app():
@@ -24,6 +31,7 @@ def create_app():
     app.include_router(member.router)
     app.include_router(project_slot.router)
     app.include_router(project_budget.router)
+    app.include_router(project_member_assign.router)
 
     return app
 
