@@ -21,6 +21,7 @@ from ..models import (
     ProjectSlot,
     ProjectBudget,
     ProjectMemberAssign,
+    MemberCost,
 )
 
 
@@ -131,8 +132,8 @@ class ProjectSlotResource(Model):
             input_=inputs.ForeignKey(model=Project),
         ),
         Field(name="name", label="役割"),
-        Field(name="start_date", label="募集開始日", input_=inputs.Date()),
-        Field(name="end_date", label="募集終了日", input_=inputs.Date()),
+        Field(name="start_date", label="開始日", input_=inputs.Date()),
+        Field(name="end_date", label="終了日", input_=inputs.Date()),
         Field(name="budget", label="予算", input_=inputs.Number()),
         "created_at",
     ]
@@ -158,6 +159,26 @@ class MemberResource(Model):
     ]
 
 
+# MemberCost
+@app.register
+class MemberCostResource(Model):
+    label = "メンバーコスト"
+    model = MemberCost
+    icon = "fas  fa-yen-sign"
+    fields = [
+        "id",
+        Field(
+            name="member_id",
+            label="Member",
+            input_=inputs.ForeignKey(model=Member),
+        ),
+        Field(name="start_date", label="開始日", input_=inputs.Date()),
+        Field(name="end_date", label="終了日", input_=inputs.Date()),
+        Field(name="cost", label="コスト", input_=inputs.Number()),
+        "created_at",
+    ]
+
+
 # ProjectMemberAssign
 @app.register
 class ProjectMemberAssignResource(Model):
@@ -176,8 +197,8 @@ class ProjectMemberAssignResource(Model):
             label="member",
             input_=inputs.ForeignKey(model=Member),
         ),
-        Field(name="start_date", label="アサイン開始日", input_=inputs.Date()),
-        Field(name="end_date", label="アサイン終了日", input_=inputs.Date()),
+        Field(name="start_date", label="開始日", input_=inputs.Date()),
+        Field(name="end_date", label="終了日", input_=inputs.Date()),
         Field(name="cost", label="コスト", input_=inputs.Number()),
         "created_at",
     ]

@@ -19,6 +19,7 @@ DB_CONFIG = {
                 "app.models.project_budget",
                 "app.models.project_budget",
                 "app.models.project_member_assign",
+                "app.models.member_cost",
                 # "aerich.models",
             ],
             "default_connection": "default",

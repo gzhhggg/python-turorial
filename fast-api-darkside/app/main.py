@@ -9,6 +9,7 @@ from app.routers import (
     project_slot,
     project_budget,
     project_member_assign,
+    member_cost,
 )
 
 
@@ -32,6 +33,7 @@ def create_app():
     app.include_router(project_slot.router)
     app.include_router(project_budget.router)
     app.include_router(project_member_assign.router)
+    app.include_router(member_cost.router)
 
     return app
 
