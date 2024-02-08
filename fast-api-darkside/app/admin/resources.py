@@ -13,7 +13,7 @@ from fastapi_admin.resources import (
 )
 from fastapi_admin.widgets.filters import ForeignKey
 from .constants import BASE_DIR
-from ..models import Admin, Client, Member, Project, ProjectSlot
+from ..models import Admin, Client, Member, Project, ProjectSlot, ProjectBudget
 
 
 @app.register
@@ -40,10 +40,10 @@ class AdminResource(Model):
     icon = "fas fa-user"
     fields = [
         "id",
-        "username",
+        Field(name="username", label="ユーザー名"),
         Field(
             name="password",
-            label="Password",
+            label="パスワード",
             display=displays.InputOnly(),  # リストに表示しない
             input_=inputs.Password(),  # HTML form input typeをpasswordに指定
         ),
@@ -64,7 +64,7 @@ class ClientResource(Model):
     icon = "fas fa-user-tie"
     fields = [
         "id",
-        "name",
+        Field(name="name", label="クライアント名"),
         "created_at",
     ]
 
@@ -79,12 +79,32 @@ class ProjectResource(Model):
         "id",
         Field(
             name="client_id",
-            label="client",
+            label="クライアント",
             input_=inputs.ForeignKey(model=Client),
         ),
-        "name",
-        Field(name="start_date", label="start_date", input_=inputs.Date()),
-        Field(name="end_date", label="end_date", input_=inputs.Date()),
+        Field(name="name", label="プロジェクト名"),
+        Field(name="start_date", label="開始日", input_=inputs.Date()),
+        Field(name="end_date", label="終了日", input_=inputs.Date()),
+        "created_at",
+    ]
+
+
+# ProjectBudget
+@app.register
+class ProjectSlotResource(Model):
+    label = "プロジェクト期間別予算"
+    model = ProjectBudget
+    icon = "fas fa-money-bill"
+    fields = [
+        "id",
+        Field(
+            name="project_id",
+            label="project",
+            input_=inputs.ForeignKey(model=Project),
+        ),
+        Field(name="start_date", label="開始日", input_=inputs.Date()),
+        Field(name="end_date", label="終了日", input_=inputs.Date()),
+        Field(name="budget", label="予算", input_=inputs.Number()),
         "created_at",
     ]
 
