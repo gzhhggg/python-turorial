@@ -10,6 +10,7 @@ from .constants import BASE_DIR
 async def configure_admin(app):
     redis = await aioredis_from_url("redis://127.0.0.1:6379", encoding="utf8")
     await admin_app.configure(
+        # default_locale="Asia/Tokyo", 意味なし
         template_folders=[os.path.join(BASE_DIR, "templates")],
         providers=[
             UsernamePasswordProvider(

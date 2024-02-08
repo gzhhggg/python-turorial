@@ -230,12 +230,14 @@ docker で起動している redis の IP を特定するコマンド
 
 ## fastapi-admin 導入後のディレクトリ構成
 
+fastadmi-admin がらみは一旦 admin/配下で行う
+
 ```
 fast-api-darkside/
 │
 ├── app/
 │   ├── __init__.py
-│   ├── main.py # FastAPI アプリケーション、ルーティング、FastAPI-Adminの設定
+│   ├── main.py # FastAPI アプリケーション、ルーティング、FastAPI-Adminのマウント
 │   ├── models/ # Tortoise ORM モデル
 │   │   ├── __init__.py
 │   │   ├── admin.py # FastAPI-Adminで使用するモデル
@@ -251,17 +253,69 @@ fast-api-darkside/
 │   │   └── ... # CRUD操作
 │   ├── admin/ # FastAPI-Admin設定とカスタマイズ
 │   │   ├── __init__.py
-│   │   ├── admin.py # FastAPI-Adminの設定と初期化
-│   │   └── resources.py # FastAPI-Adminリソース定義
-│   └── config.py # 設定ファイル（DB設定含む）
+│   │   ├── main.py # FastAPI-Adminの設定と初期化
+│   │   └── resources.py # FastAPI-Adminのリソース
+│   │   └── constants.py # FastAPI-Adminのコンテンツ
+│   │   └── templates/ # Jinja2 テンプレート
+│   │   │    └── ... # HTMLテンプレートファイル
+│   │   └── static/ # 静的ファイル
+│   │        └── ...# CSS、画像など（今のところ使わない）
+│   └── config.py # 設定ファイル（DB設定など）
 │
-├── static/ # 静的ファイル
-│   └── ... # CSS、JavaScript、画像など
-├── templates/ # Jinja2 テンプレート
-│   └── ... # HTMLテンプレートファイル
-├── migrations/ # マイグレーションファイル
+├── migrations/ # マイグレーションファイル(ORMでマイグレーションファイル作り方わからない)
 ├── tests/ # テストケース
 ├── .env # 環境変数と設定値
+├── server.py #サーバー起動
 ├── pyproject.toml # poetry依存関係と設定
-└── README.md # プロジェクトの説明
+├── docker-compose.yaml
+└── README.md
 ```
+
+## 管理画面作る時の参考
+
+公式：
+https://fastapi-admin-docs.long2ice.io/reference/
+
+## プロジェクトの概要（予想）
+
+ER 図からどのようなプロジェクトを読み取る
+
+### 全体像
+
+クライアント、プロジェクト、メンバー、プロジェクトの予算と募集枠、メンバーとプロジェクト枠のアサイン、メンバーのコストを管理するアプリ
+
+### 詳細
+
+#### クライアント（clients）
+
+サービスまたはアプリケーションを利用する企業 or 個人を管理する。
+各クライアントは一意の ID、名前、登録日時、削除日時を持つ。
+
+#### メンバー（members）
+
+クライアントに所属する従業員と協力者を管理する。
+各メンバーは、所属するクライアント ID、名前、メールアドレス、電話番号、登録日時、削除日時
+
+#### メンバーコスト（member_costs）
+
+各メンバーの特定の期間におけるコスト（給与？）を管理する。
+期間（開始日〜終了日）、コスト、登録日時、削除日時をもつ。
+
+#### プロジェクト（projects）
+
+クライアントが実施する各プロジェクトを管理する。
+プロジェクトはクライアントに紐づき、名前、プロジェクトの開始日と終了日、登録日時、削除日時を持つ。
+
+#### プロジェクト予算（project_budgets）
+
+プロジェクトの特定期間における予算を管理。
+期間（開始日〜終了日）、予算額、登録日時、削除日時をもつ。
+
+#### プロジェクト枠（project_slots）
+
+プロジェクト内で募集する特定の役割やタスクの枠組みを管理しる。
+プロジェクト ID に紐づく、名前、募集枠の開始日と終了日、予算、登録日時、削除日時をもつ。
+
+#### プロジェクトメンバーアサイン（project_member_asigns）
+
+プロジェクトメンバーアサインテーブルは、メンバーがプロジェクトの特定の枠にアサインされることを管理する。プロジェクト枠 ID とメンバー ID に紐づき、アサインの期間（開始日〜終了日）、コスト、登録日時、削除日時を持つ。

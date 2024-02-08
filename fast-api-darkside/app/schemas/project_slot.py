@@ -3,32 +3,32 @@ from typing import Optional
 from datetime import date, datetime
 
 
-class ProjectBase(BaseModel):
-    name: str = Field(..., example="プロジェクトA")
-    client_id: int = Field(..., description="クライアントID")
-    start_date: date = Field(..., description="プロジェクト開始日")
-    end_date: Optional[date] = Field(None, description="プロジェクト終了日")
+class ProjectSlotBase(BaseModel):
+    project_id: int = Field(..., description="プロジェクトID")
+    name: str = Field(..., example="エンジニア")
+    start_date: date = Field(..., description="募集開始日")
+    end_date: Optional[date] = Field(None, description="募集終了日")
+    budget: int = Field(..., description="予算")
 
-    # end_date が start_date より後であることを確認するバリデータ
+
+class ProjectSlotCreate(ProjectSlotBase):
     @validator("end_date", allow_reuse=True)
     def validate_dates(cls, end_date, values, **kwargs):
         if end_date and "start_date" in values and end_date <= values["start_date"]:
             raise ValueError("終了日は開始日より後でなければなりません")
         return end_date
 
-
-class ProjectCreate(ProjectBase):
     pass
 
 
-class ProjectCreateResponse(ProjectBase):
+class ProjectSlotCreateResponse(ProjectSlotBase):
     id: int
 
     class Config:
         orm_mode = True
 
 
-class Project(ProjectBase):
+class ProjectSlot(ProjectSlotBase):
     id: int
     created_at: datetime
     deleted_at: Optional[datetime]

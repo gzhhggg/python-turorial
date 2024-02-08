@@ -11,10 +11,11 @@ DB_CONFIG = {
             # モデルを定義している Python モジュールへのパス
             "models": [
                 # TODO: models/__init__.pyで読み込むように設定する？
+                "app.models.admin",
                 "app.models.client",
                 "app.models.project",
                 "app.models.member",
-                "app.models.admin",
+                "app.models.project_slot",
                 # "aerich.models",
             ],
             "default_connection": "default",

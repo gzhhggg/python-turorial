@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from .config.db import DB_CONFIG
 from .admin.main import configure_admin
-# from app.routers import client, project, member
+from app.routers import client, project, member, project_slot
 
 
 def create_app():
@@ -19,11 +19,12 @@ def create_app():
     async def startup_event():
         await configure_admin(app)  # FastAPI-Adminを設定
 
+    app.include_router(client.router)
+    app.include_router(project.router)
+    app.include_router(member.router)
+    app.include_router(project_slot.router)
+
     return app
 
 
 app = create_app()
-
-# app.include_router(client.router)
-# app.include_router(project.router)
-# app.include_router(member.router)doi
