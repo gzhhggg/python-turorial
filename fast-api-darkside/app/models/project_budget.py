@@ -12,7 +12,7 @@ class ProjectBudget(Model):
     deleted_at = fields.DatetimeField(null=True)
 
     class Meta:
-        table_name = "project_budgets"
+        table = "project_budgets"
 
     def __str__(self):
         return self.name

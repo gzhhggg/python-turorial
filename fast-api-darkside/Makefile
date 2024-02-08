@@ -3,3 +3,6 @@ start:
 
 env-check:
 	echo $VIRTUAL_ENV
+
+seeder:
+	python app/seeder.py

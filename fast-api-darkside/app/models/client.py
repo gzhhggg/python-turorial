@@ -13,9 +13,3 @@ class Client(Model):
 
     def __str__(self):
         return self.name
-
-
-# __str__メソッドを定義しない場合
-# オブジェクトのクラス名と一緒に一意の識別子（メモリ上のアドレス）が表示される
-# ことが一般的。例えば、<Client object at 0x10e75e2e8>のような形式になる
-# Clientインスタンスを出力した際にクライアントの名前が表示されなくなるよ

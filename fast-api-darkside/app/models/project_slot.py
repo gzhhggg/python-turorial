@@ -13,7 +13,7 @@ class ProjectSlot(Model):
     deleted_at = fields.DatetimeField(null=True)
 
     class Meta:
-        table_name = "project_slots"
+        table = "project_slots"
 
     def __str__(self):
         return self.name

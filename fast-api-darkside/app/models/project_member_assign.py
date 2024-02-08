@@ -17,7 +17,7 @@ class ProjectMemberAssign(Model):
     deleted_at = fields.DatetimeField(null=True)
 
     class Meta:
-        table_name = "project_member_assigns"
+        table = "project_member_assigns"
 
     def __str__(self):
         return self.name

@@ -11,5 +11,8 @@ class Admin(AbstractAdmin):
     email = fields.CharField(max_length=200, default="")
     created_at = fields.DatetimeField(auto_now_add=True)
 
+    class Meta:
+        table = "admins"
+
     def __str__(self):
         return self.name

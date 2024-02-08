@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
+from tortoise import Tortoise
 from .config.db import DB_CONFIG
 from .admin.main import configure_admin
 from app.routers import (
@@ -13,8 +14,21 @@ from app.routers import (
 )
 
 
+# データベース初期化
+async def init_db():
+    await Tortoise.init(config=DB_CONFIG)
+    await Tortoise._drop_databases()
+    await Tortoise.generate_schemas()
+
+
 def create_app():
     app = FastAPI()
+
+    @app.on_event("startup")
+    async def startup_event():
+        # 作成時にデータベースを初期化する場合はここをアンコメント
+        # await init_db()
+        await configure_admin(app)  # FastAPI-Adminを設定
 
     register_tortoise(
         app,
@@ -22,10 +36,6 @@ def create_app():
         generate_schemas=True,  # スタートアップ時にスキーマを自動生成
         add_exception_handlers=True,
     )
-
-    @app.on_event("startup")
-    async def startup_event():
-        await configure_admin(app)  # FastAPI-Adminを設定
 
     app.include_router(client.router)
     app.include_router(project.router)
