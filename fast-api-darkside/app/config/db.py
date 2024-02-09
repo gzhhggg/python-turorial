@@ -1,6 +1,13 @@
 ## TORTOISE_ORMの設定情報
 # TODO:本番と開発で管理できるようにする
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
+print(DATABASE_URL)
+
 DB_CONFIG = {
     "connections": {
         # "default" は Tortoise-ORM 内で使用する接続名です。

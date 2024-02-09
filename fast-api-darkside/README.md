@@ -104,6 +104,10 @@ poetry add email-validator
 poetry add uvicorn
 # MySQLデータベースへの接続時に使用される認証方法
 pip install cryptography
+
+開発環境のみで必要ようなライブラリ
+poetry add pytest httpx pytest-asyncio --dev
+
 ```
 
 仮想環境に入っているか確認

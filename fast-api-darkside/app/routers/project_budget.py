@@ -1,38 +1,47 @@
 from fastapi import APIRouter
 from typing import List
-import app.cruds.project_slot as project_slot_crud
-import app.schemas.project_slot as project_slot_schema
+import app.cruds.project_budget as project_budget_crud
+import app.schemas.project_budget as project_budget_schema
 
 router = APIRouter()
 
 
 @router.post(
-    "/project_slots", response_model=project_slot_schema.ProjectSlotCreateResponse
+    "/project_budgets", response_model=project_budget_schema.ProjectBudgetCreateResponse
 )
-async def create_project_slot(project_slot: project_slot_schema.ProjectSlotCreate):
-    created_project_slot = await project_slot_crud.create_project_slot(project_slot)
-    return created_project_slot
+async def create_project_budget(
+    project_budget: project_budget_schema.ProjectBudgetCreate,
+):
+    created_project_budget = await project_budget_crud.create_project_budget(
+        project_budget
+    )
+    return created_project_budget
 
 
-@router.get("/project_slots", response_model=List[project_slot_schema.ProjectSlot])
-async def get_project_slots():
-    project_slots = await project_slot_crud.get_project_slots()
-    return project_slots
+@router.get(
+    "/project_budgets", response_model=List[project_budget_schema.ProjectBudget]
+)
+async def get_project_budgets():
+    project_budgets = await project_budget_crud.get_project_budgets()
+    return project_budgets
 
 
 @router.put(
-    "/project_slots/{project_slot_id}", response_model=project_slot_schema.ProjectSlot
+    "/project_budgets/{project_budget_id}",
+    response_model=project_budget_schema.ProjectBudget,
 )
-async def update_project_slot(
-    project_slot_id: int, project_slot: project_slot_schema.ProjectSlotCreate
+async def update_project_budget(
+    project_budget_id: int, project_budget: project_budget_schema.ProjectBudgetCreate
 ):
-    updated_project_slot = await project_slot_crud.update_project_slot(
-        project_slot_id, project_slot
+    updated_project_budget = await project_budget_crud.update_project_budget(
+        project_budget_id, project_budget
     )
-    return updated_project_slot
+    return updated_project_budget
 
 
-@router.delete("/project_slots/{project_slot_id}", response_model=None, status_code=204)
-async def delete_project_slot(project_slot_id: int):
-    await project_slot_crud.delete_project_slot(project_slot_id)
-    return {"message": "Project slot successfully deleted"}
+@router.delete(
+    "/project_budgets/{project_budget_id}", response_model=None, status_code=204
+)
+async def delete_project_budget(project_budget_id: int):
+    await project_budget_crud.delete_project_budget(project_budget_id)
+    return {"message": "Project budget successfully deleted"}

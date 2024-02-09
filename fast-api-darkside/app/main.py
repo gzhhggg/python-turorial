@@ -14,25 +14,16 @@ from app.routers import (
 )
 
 
-# データベース初期化
-async def init_db():
-    await Tortoise.init(config=DB_CONFIG)
-    await Tortoise._drop_databases()
-    await Tortoise.generate_schemas()
-
-
-def create_app():
+def create_app(config=DB_CONFIG):
     app = FastAPI()
 
     @app.on_event("startup")
     async def startup_event():
-        # 作成時にデータベースを初期化する場合はここをアンコメント
-        # await init_db()
         await configure_admin(app)  # FastAPI-Adminを設定
 
     register_tortoise(
         app,
-        config=DB_CONFIG,
+        config=config,
         generate_schemas=True,  # スタートアップ時にスキーマを自動生成
         add_exception_handlers=True,
     )
