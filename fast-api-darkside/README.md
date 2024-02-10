@@ -338,7 +338,9 @@ tests/conftest.py でフィクスチャを定義する（テストを実行す�
 pytest の plugin でカバレッジ計測の便利なライブラリ「pytest-cov」を使うとよさそう
 
 ![alt text](image.png)
+
 テストで全てのケースが担保されているか確認できる
+
 ![alt text](image-1.png)
 
 ## プロジェクトのルールについて
