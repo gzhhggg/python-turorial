@@ -1,7 +1,7 @@
 import os
 from fastapi_admin.app import app as admin_app
 from fastapi_admin.providers.login import UsernamePasswordProvider
-from ..config.db import DB_CONFIG
+from ..config.db import TORTOISE_ORM
 from ..models.admin import Admin
 from aioredis import from_url as aioredis_from_url
 from .constants import BASE_DIR

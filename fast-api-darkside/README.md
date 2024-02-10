@@ -232,6 +232,18 @@ docker で起動している redis の IP を特定するコマンド
  docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' darkside_redis
 ```
 
+docker 　で起動している redis に入る方法
+
+```
+ docker exec -it darkside_redis /bin/bash
+ ## レディスCLIを実行する場合
+ redis-cli
+```
+
+redis cli コマンドのまとめ
+
+参考：https://qiita.com/hatsu/items/a52817364160e0b6bb60
+
 ## fastapi-admin 導入後のディレクトリ構成
 
 fastadmi-admin がらみは一旦 admin/配下で行う
@@ -342,6 +354,72 @@ pytest の plugin でカバレッジ計測の便利なライブラリ「pytest-c
 テストで全てのケースが担保されているか確認できる
 
 ![alt text](image-1.png)
+
+## Tortoise ORM のマイグレーションについて検討
+
+### 概要
+
+公式 Documents：https://tortoise.github.io/migration.html
+
+Tortoise-ORM でのマイグレーション管理には、Aerich というツールを使用する
+
+Aerich は Tortoise-ORM を追加した時に追加されてる
+
+### Tortoise-ORM の設定ファイルに Aerich を追加する
+
+```
+TORTOISE_ORM = {
+    "connections": {"default": "mysql://root:123456@127.0.0.1:3306/test"},
+    "apps": {
+        "models": {
+            "models": ["yourapp.models", "aerich.models"],
+            "default_connection": "default",
+        },
+    },
+}
+
+```
+
+### Aerich の初期化
+
+設定ファイルがある path 指定する
+
+```
+aerich init -t app.config.db.TORTOISE_ORM
+```
+
+### データベースの初期化
+
+```
+aerich init-db
+```
+
+### モデルの更新とマイグレーションの作成
+
+モデルを更新した後、aerich migrate コマンドを使用してマイグレーションファイル
+カラムの削除とか追加とかね
+
+```
+aerich migrate --name some_migration_name
+```
+
+### マイグレーションの適用
+
+マイグレーションをデータベースに適用する
+
+```
+aerich upgrade
+```
+
+### マイグレーションの履歴、ダウングレード、その他の操作
+
+```
+Aerichでは、マイグレーションの履歴の確認、特定のバージョンへのダウングレード、現在のマイグレーションの状態の確認など、
+さまざまな操作がサポートされる。各コマンドの詳細については、aerich -hを参照する。
+
+これらのステップに従うことで、Tortoise-ORMを使用したプロジェクトでマイグレーションを管理できるようになる。
+
+```
 
 ## プロジェクトのルールについて
 

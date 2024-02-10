@@ -8,7 +8,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 print(DATABASE_URL)
 
-DB_CONFIG = {
+TORTOISE_ORM = {
     "connections": {
         # "default" は Tortoise-ORM 内で使用する接続名です。
         "default": "mysql://docker:docker@localhost:33071/database"
@@ -18,16 +18,8 @@ DB_CONFIG = {
             # モデルを定義している Python モジュールへのパス
             "models": [
                 # TODO: models/__init__.pyで読み込むように設定する？
-                "app.models.admin",
-                "app.models.client",
-                "app.models.project",
-                "app.models.member",
-                "app.models.project_slot",
-                "app.models.project_budget",
-                "app.models.project_budget",
-                "app.models.project_member_assign",
-                "app.models.member_cost",
-                # "aerich.models",
+                "app.models",
+                "aerich.models",
             ],
             "default_connection": "default",
         },

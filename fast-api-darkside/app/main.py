@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from tortoise import Tortoise
-from .config.db import DB_CONFIG
+from .config.db import TORTOISE_ORM
 from .admin.main import configure_admin
 from app.routers import (
     client,
@@ -14,7 +14,7 @@ from app.routers import (
 )
 
 
-def create_app(config=DB_CONFIG):
+def create_app(config=TORTOISE_ORM):
     app = FastAPI()
 
     @app.on_event("startup")

@@ -25,6 +25,11 @@ pytest-asyncio = "^0.23.4"
 pytest-cov = "^4.1.0"
 coverage = "^7.4.1"
 
+
+[tool.aerich]
+tortoise_orm = "app.config.db.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
