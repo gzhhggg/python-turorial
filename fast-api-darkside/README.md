@@ -409,7 +409,9 @@ aerich migrate --name some_migration_name
 _[モデル名]_[操作内容].py
 ## add_column, remove_column, create_table, drop_table, modify_column など分かるようにする
 
-_client_drop_name_column
+aerich migrate --name client_drop_name_column
+aerich migrate --name user_add_email_column
+
 ```
 
 ### マイグレーションの適用
