@@ -349,11 +349,44 @@ tests/conftest.py でフィクスチャを定義する（テストを実行す�
 テストカバレッジを計測する方法
 pytest の plugin でカバレッジ計測の便利なライブラリ「pytest-cov」を使うとよさそう
 
-![alt text](image.png)
+![alt text](readme-imgaes/image.png)
 
 テストで全てのケースが担保されているか確認できる
 
-![alt text](image-1.png)
+![alt text](readme-imgaes/image-1.png)
+
+### pytest コマンド
+
+テスト実行コマンド
+
+```
+pytest tests
+
+# ファイル指定
+pytest tests/test_client.py
+```
+
+カバレッジ出力コマンド
+
+```
+pytest --cov=app --cov-report=html
+```
+
+settings.json でプロジェクトを指定して VSC でデバックで実行できる
+
+```
+{
+  "editor.tabSize": 4,
+  "python.testing.pytestArgs": ["fast-api-darkside"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
+}
+```
+
+![alt text](readme-imgaes/image-2.png)
+
+テストで使用する DB とのセッション情報などは、conftest.py に追加する
+テストを実行する際に必要な前提条件や環境を設定する
 
 ## Tortoise ORM のマイグレーションについて検討
 
@@ -432,9 +465,47 @@ Aerichでは、マイグレーションの履歴の確認、特定のバージ�
 
 ```
 
+## 環境情報の設定
+
+`/env/`に記述する
+
+python の`dotenv`使って切り分けるのがよさそう
+
+```
+from dotenv import load_dotenv
+import os
+
+dotenv_path = os.path.join(os.path.dirname(__file__), "..", "env", ".env.local")
+load_dotenv(dotenv_path=dotenv_path)
+
+```
+
 ## プロジェクトのルールについて
 
 とりあえずリファクタしていく。
 
 ある程度考える必要がありそう
 この辺は別途整理必要
+
+### fastapi のチーム開発で検討したいこと
+
+- ローカル開発環境の整備
+  チームメンバー全員が同じ開発環境を使用できるように、Docker を活用して環境を構築する。
+  ローカル環境での開発は`poetry.lock`と`pyproject.toml`でも良さそうな気がする
+
+- ディレクトリ構成
+  効率的な開発と保守のために、プロジェクトのディレクトリ構成を事前に計画し、ドキュメント化する
+
+- fastapi-admin の使用
+  FastAPI-Admin を用いて、管理画面を簡単に構築できるが途中で捨てるのでどうするか。
+
+- CI/CD 周り
+  コードの品質を保ちながら迅速にリリースできるフローを GitHub Actions で構築する
+
+- チーム開発のルール
+  ブランチ戦略、コードレビューのプロセスなど、チーム開発をスムーズに進めるためのルールを定めたい。
+  これらはチーム内で軽く話して、ドキュメント化したい。
+
+- 成果物の意識合わせ
+  プロジェクトの目標、期待される成果物、納期などについてチーム全員で意識を合わせたい。
+  現状かなりふわっとしている。

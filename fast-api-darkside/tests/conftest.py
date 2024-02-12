@@ -1,5 +1,4 @@
 import os
-import pytest
 import pytest_asyncio
 from httpx import AsyncClient
 from app.main import create_app
