@@ -299,6 +299,8 @@ https://fastapi-admin-docs.long2ice.io/reference/
 
 ER 図からどのようなプロジェクトを読み取る
 
+![alt text](readme-imgaes/manage_project_member_tool.png)
+
 ### 全体像
 
 クライアント、プロジェクト、メンバー、プロジェクトの予算と募集枠、メンバーとプロジェクト枠のアサイン、メンバーのコストを管理するアプリ
@@ -487,7 +489,7 @@ load_dotenv(dotenv_path=dotenv_path)
 ある程度考える必要がありそう
 この辺は別途整理必要
 
-### fastapi のチーム開発で検討したいこと
+### fastapi のチーム開発で事前に検討しておきたいこと
 
 - ローカル開発環境の整備
   チームメンバー全員が同じ開発環境を使用できるように、Docker を活用して環境を構築する。
