@@ -561,6 +561,7 @@ query {
 
 ### strabery入れた後のディレクトリ構成案
 
+構成案１ FastAPIとGraphQLの両立
 ```
 fast-api-darkside/
 │
@@ -612,7 +613,53 @@ fast-api-darkside/
 ```
 
 もっとシンプリに出来ないかな、、？
-modelsとgraphql
 
 - 完全にGraphQLに移行する場合は、schemas/ディレクトリを削除し、Strawberryの型定義に置き換えることが一般的
 - REST APIとGraphQL APIを両方提供する場合は、schemas/ディレクトリを維持し、PydanticとStrawberryの型を適宜使い分けるが、今回は要らなそう
+
+構成案2 GraphQLの両立
+
+```
+.
+├── app/
+│   ├── __init__.py
+│   ├── main.py                  # FastAPI アプリケーションとルーティングの設定
+│   ├── models/                  # Tortoise ORM モデル
+│   │   ├── __init__.py
+│   │   ├── client.py
+│   │   ├── member.py
+│   │   ├── project.py
+│   │   └── ...                  # その他のモデル
+│   ├── graphql/                 # GraphQL関連の定義
+│   │   ├── __init__.py
+│   │   ├── schema.py            # GraphQL スキーマの定義
+│   │   ├── types.py             # GraphQL タイプの定義（モデルに基づく）
+│   │   └── resolvers/           # クエリとミューテーションのリゾルバ
+│   │       ├── __init__.py
+│   │       ├── client_resolver.py
+│   │       ├── member_resolver.py
+│   │       └── project_resolver.py
+│   └── config/                  # 設定ファイル
+│       ├── __init__.py
+│       └── settings.py          # 設定ファイル（DB設定含む）
+└── ...
+
+```
+
+Strawberry GraphQLを使用して、Tortoise ORMのClientモデルからGraphQLの型を自動的に生成する
+正し、tortoise ormでは出来ない。
+Pydanticとの互換性が違うから、
+SQLModelはSQLAlchemyとPydanticを橋渡しするライブラリで、Pydanticモデルとしても機能する。
+このため、`Strawberryの@strawberry.experimental.pydantic.type`デコレータを使用して
+直接SQLModelのモデルからGraphQLの型を生成することができるよ。
+
+
+```
+@strawberry.experimental.pydantic.type(model=Client, all_fields=True)
+class ClientType:
+    pass
+```
+
+結論：
+Tortoise ORMも非同期Python ORMとしては優れた選択肢の一つだが、
+Strawberry GraphQLとの連携を最適化するためには、Pydanticとの互換性を持つORMを選択する方がスムーズな開発が期待できそうです。

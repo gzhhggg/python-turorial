@@ -1,3 +1,4 @@
+import strawberry
 from tortoise import fields
 from tortoise.models import Model
 
@@ -13,3 +14,7 @@ class Client(Model):
 
     def __str__(self):
         return self.name
+
+@strawberry.experimental.pydantic.type(model=Client, all_fields=True)
+class ClientType:
+    pass

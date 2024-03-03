@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 import strawberry
 from app.cruds.client import create_client, delete_client, get_clients, update_client
@@ -15,17 +15,8 @@ class Client:
 @strawberry.type
 class Query:
     @strawberry.field
-    async def clients(self) -> List[Client]:
-        clients = await get_clients()
-        return [
-            Client(
-                id=client.id,
-                name=client.name,
-                created_at=str(client.created_at) if client.created_at else None,
-                deleted_at=str(client.deleted_at) if client.deleted_at else None
-            ) for client in clients
-        ]
-
+    async def clients() -> list[Client]:
+        return await get_clients()
 @strawberry.type
 class Mutation:
     @strawberry.mutation
