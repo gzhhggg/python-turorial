@@ -511,3 +511,108 @@ load_dotenv(dotenv_path=dotenv_path)
 - 成果物の意識合わせ
   プロジェクトの目標、期待される成果物、納期などについてチーム全員で意識を合わせたい。
   現状かなりふわっとしている。
+
+## strawberryについて
+
+とりあえず、この状態からstrawberryを導入していく
+
+```
+poetry add strawberry-graphql
+```
+### Tortoise ORMで実装するとだるい？
+
+モデルインスタンスから直接__dict__を展開してStrawberryの型に渡す方法には問題が発生する。
+これは、Tortoiseモデルの内部状態や予期しない属性がStrawberry型のコンストラクタに渡される？
+
+graphqlを実装してクエリを叩くとエラーが発生する(Tortoise orm)
+
+実行内容
+```
+query {
+  clients {
+    id
+    name
+  }
+}
+```
+
+発生エラー
+```
+{
+  "data": null,
+  "errors": [
+    {
+      "message": "Client.__init__() got an unexpected keyword argument '_partial'",
+      "locations": [
+        {
+          "line": 2,
+          "column": 3
+        }
+      ],
+      "path": [
+        "clients"
+      ]
+    }
+  ]
+}
+```
+そもそもStrawberryとTortoise ORMを特定に統合する方法に関する直接的な参考資料やガイドが少ない
+この組み合わせがあまり一般的ではない？
+
+### strabery入れた後のディレクトリ構成案
+
+```
+fast-api-darkside/
+│
+├── app/
+│   ├── __init__.py
+│   ├── main.py # FastAPI アプリケーション、ルーティング、FastAPI-Adminのマウント
+│   ├── models/ # Tortoise ORM モデル
+│   │   ├── __init__.py
+│   │   ├── admin.py # FastAPI-Adminで使用するモデル
+│   │   └── ... # その他のモデル
+│   ├── schemas/ # Pydantic スキーマ
+│   │   ├── __init__.py
+│   │   └── ... # スキーマ
+│   ├── routers/ # ルーティングモジュール
+│   │   ├── __init__.py
+│   │   └── ... # その他のルーター
+│   ├── cruds/ # CRUD モジュール
+│   │   ├── __init__.py
+│   │   └── ... # CRUD操作
+│   ├── graphql/                 # GraphQLスキーマ、タイプ、ミューテーション
+│   │   ├── __init__.py
+│   │   ├── schema.py            # GraphQL スキーマの定義
+│   │   ├── types.py             # GraphQL タイプの定義
+│   │   └── mutations/           # GraphQL ミューテーションの定義
+│   │       ├── __init__.py
+│   │       ├── clients.py
+│   │       └── ...
+│   ├── admin/ # FastAPI-Admin設定とカスタマイズ
+│   │   ├── __init__.py
+│   │   ├── main.py # FastAPI-Adminの設定と初期化
+│   │   └── resources.py # FastAPI-Adminのリソース
+│   │   └── constants.py # FastAPI-Adminのコンテンツ
+│   │   └── templates/ # Jinja2 テンプレート
+│   │   │    └── ... # HTMLテンプレートファイル
+│   │   └── static/ # 静的ファイル
+│   │        └── ...# CSS、画像など（今のところ使わない）
+│   └── config.py # 設定ファイル（DB設定など）
+│
+├── migrations/ # マイグレーションファイル(ORMでマイグレーションファイル作り方わからない)
+├── tests/ # テスト用のディレクトリ
+│   ├── __init__.py # テスト用DBとのセッション（dotenvで定義する）
+│   ├── conftest.py # テスト用のフィクスチャ
+│   └── ... # その他のテストケース
+├── .env # 環境変数と設定値
+├── server.py #サーバー起動
+├── pyproject.toml # poetry依存関係と設定
+├── docker-compose.yaml
+└── README.md
+```
+
+もっとシンプリに出来ないかな、、？
+modelsとgraphql
+
+- 完全にGraphQLに移行する場合は、schemas/ディレクトリを削除し、Strawberryの型定義に置き換えることが一般的
+- REST APIとGraphQL APIを両方提供する場合は、schemas/ディレクトリを維持し、PydanticとStrawberryの型を適宜使い分けるが、今回は要らなそう

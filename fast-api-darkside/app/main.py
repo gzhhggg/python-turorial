@@ -1,21 +1,25 @@
 from fastapi import FastAPI
+from strawberry.fastapi import GraphQLRouter
 from tortoise.contrib.fastapi import register_tortoise
-from tortoise import Tortoise
-from .config.db import TORTOISE_ORM
-from .admin.main import configure_admin
+
+from app.graphql.schema import schema  # GraphQLスキーマをインポート
 from app.routers import (
     client,
-    project,
     member,
-    project_slot,
+    member_cost,
+    project,
     project_budget,
     project_member_assign,
-    member_cost,
+    project_slot,
 )
+
+from .admin.main import configure_admin
+from .config.db import TORTOISE_ORM
 
 
 def create_app(config=TORTOISE_ORM):
     app = FastAPI()
+    graphql_app = GraphQLRouter(schema)
 
     @app.on_event("startup")
     async def startup_event():
@@ -35,8 +39,8 @@ def create_app(config=TORTOISE_ORM):
     app.include_router(project_budget.router)
     app.include_router(project_member_assign.router)
     app.include_router(member_cost.router)
+    app.include_router(graphql_app, prefix="/graphql")  # GraphQLエンドポイントを追加
 
     return app
-
 
 app = create_app()
