@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 from tortoise.contrib.fastapi import register_tortoise
 
@@ -19,6 +20,13 @@ from .config.db import TORTOISE_ORM
 
 def create_app(config=TORTOISE_ORM):
     app = FastAPI()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # 実運用では具体的なオリジンに限定することが推奨されます
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+)
     graphql_app = GraphQLRouter(schema)
 
     @app.on_event("startup")

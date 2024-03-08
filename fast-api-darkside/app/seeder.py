@@ -1,16 +1,15 @@
-import asyncio
 from faker import Faker
-from tortoise import Tortoise, run_async
-from tortoise.transactions import in_transaction
 from models import (
     Client,
-    Project,
     Member,
-    ProjectSlot,
     MemberCost,
+    Project,
     ProjectBudget,
     ProjectMemberAssign,
+    ProjectSlot,
 )
+from tortoise import Tortoise, run_async
+from tortoise.transactions import in_transaction
 
 fake = Faker("ja_JP")
 
@@ -30,7 +29,7 @@ async def seed():
     await delete_existing_data()
     # Client
     clients = []
-    for _ in range(5):
+    for _ in range(40):
         client = await Client.create(name=fake.company())
         clients.append(client)
 
