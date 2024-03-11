@@ -16,11 +16,9 @@ const dataProvider = {
     };
     const url = `${apiUrl}/${resource}?${stringify(query)}`;
     const { json, headers } = await httpClient(url);
-    console.log(headers.get("Content-Range"));
     return {
       data: json,
-      // total: parseInt(headers.get("Content-Range").split("/").pop(), 10),
-      total: json.length,
+      total: parseInt(headers.get("content-range").split("/").pop(), 10),
     };
   },
 

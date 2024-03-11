@@ -24,19 +24,20 @@ def create_app(config=TORTOISE_ORM):
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
-)
+        expose_headers=["Content-Range"]  # Content-Rangeヘッダを公開
+    )
     # graphql_app = GraphQLRouter(schema)
 
     @app.on_event("startup")
     async def startup_event():
         await configure_admin(app)  # FastAPI-Adminを設定
 
-    register_tortoise(
-        app,
-        config=config,
-        generate_schemas=True,  # スタートアップ時にスキーマを自動生成
-        add_exception_handlers=True,
-    )
+        register_tortoise(
+            app,
+            config=config,
+            generate_schemas=True,  # スタートアップ時にスキーマを自動生成
+            add_exception_handlers=True,
+        )
 
     app.include_router(client.router)
     app.include_router(project.router)

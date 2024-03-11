@@ -1,4 +1,5 @@
 from tortoise import fields
+from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
 
 
@@ -16,3 +17,6 @@ class Member(Model):
 
     def __str__(self):
         return self.name
+
+MemberPydantic = pydantic_model_creator(Member, name="MemberPydantic")
+MemberPydanticCreate = pydantic_model_creator(Member, name="MemberPydanticCreate", include=["name", "client", "email", "phone"])

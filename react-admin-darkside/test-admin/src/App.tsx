@@ -19,6 +19,7 @@ const App = () => (
     <Resource
       name="members"
       list={MemberList}
+      recordRepresentation="name"
       edit={MemberEdit}
       create={MemberCreate}
     />

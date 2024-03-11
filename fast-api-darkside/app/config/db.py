@@ -1,8 +1,9 @@
 ## TORTOISE_ORMの設定情報
 # TODO:本番と開発で管理できるようにする
 
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
 
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -19,7 +20,6 @@ TORTOISE_ORM = {
             "models": [
                 # TODO: models/__init__.pyで読み込むように設定する？
                 "app.models",
-                "aerich.models",
             ],
             "default_connection": "default",
         },
