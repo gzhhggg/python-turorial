@@ -663,3 +663,49 @@ class ClientType:
 結論：
 Tortoise ORMも非同期Python ORMとしては優れた選択肢の一つだが、
 Strawberry GraphQLとの連携を最適化するためには、Pydanticとの互換性を持つORMを選択する方がスムーズな開発が期待できそうです。
+
+## ReactAdminについて
+
+ReactAdminとFastapiでUI画面を作成する場合は、ReactAdminの求めるレスポンススタイルにAPI側を合わせる必要があります。
+
+公式：https://marmelab.com/react-admin/DataProviderWriting.html
+公式：https://marmelab.com/react-admin/doc/3.19/DataProviders.html
+
+DataProviderの実装
+データプロバイダーは次のメソッドを実装する必要があります。
+```
+const dataProvider = {
+    getList:    (resource, params) => Promise, // get a list of records based on sort, filter, and pagination
+    getOne:     (resource, params) => Promise, // get a single record by id
+    getMany:    (resource, params) => Promise, // get a list of records based on an array of ids
+    getManyReference: (resource, params) => Promise, // get the records referenced to another record, e.g. comments for a post
+    create:     (resource, params) => Promise, // create a record
+    update:     (resource, params) => Promise, // update a record based on a patch
+    updateMany: (resource, params) => Promise, // update a list of records based on an array of ids and a common patch
+    delete:     (resource, params) => Promise, // delete a record by id
+    deleteMany: (resource, params) => Promise, // delete a list of records based on an array of ids
+}
+```
+
+### Request Formatについて
+ReactAdminからFastApiにリクエストを送るときのFormat制約
+![alt text](readme-imgaes/image-3.png)
+
+### Response Format
+![alt text](readme-imgaes/image-4.png)
+
+これが分かりやすい
+```
+GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Range: posts 0-4/27
+[
+    { "id": 126, "title": "allo?", "author_id": 12 },
+    { "id": 127, "title": "bien le bonjour", "author_id": 12 },
+    { "id": 124, "title": "good day sunshine", "author_id": 12 },
+    { "id": 123, "title": "hello, world", "author_id": 12 },
+    { "id": 125, "title": "howdy partner", "author_id": 12 }
+]
+```

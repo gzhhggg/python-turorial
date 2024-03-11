@@ -1,42 +1,112 @@
 import { fetchUtils } from "react-admin";
+import { stringify } from "query-string";
 
 const apiUrl = "http://localhost:8000";
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider = {
+  // GET http://path.to.my.api/posts?sort=["title","ASC"]&range=[0, 4]&filter={"author_id":12}
   getList: async (resource, params) => {
-    // React-Adminからのページネーションとソートのパラメータを取得
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-
-    // FastAPIエンドポイントに渡すクエリパラメータを構築
     const query = {
-      start: (page - 1) * perPage,
-      end: page * perPage,
-      sort: field,
-      order: order,
+      sort: JSON.stringify([field, order]),
+      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+      filter: JSON.stringify(params.filter),
     };
-
-    const url = `${apiUrl}/${resource}?${new URLSearchParams(
-      query
-    ).toString()}`;
-
-    // HTTPクライアントを使用してAPIからデータを取得
-    const { headers, json } = await httpClient(url);
-
-    // レスポンスヘッダから合計件数を取得
-    const contentRange = headers.get("Content-Range");
-    const total = contentRange
-      ? parseInt(contentRange.split("/").pop(), 10)
-      : json.length;
-
+    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const { json, headers } = await httpClient(url);
+    console.log(headers.get("Content-Range"));
     return {
       data: json,
-      total: total,
+      // total: parseInt(headers.get("Content-Range").split("/").pop(), 10),
+      total: json.length,
     };
   },
 
-  // 他のメソッドも同様に実装
+  getOne: async (resource, params) => {
+    const url = `${apiUrl}/${resource}/${params.id}`;
+    const { json } = await httpClient(url);
+    return { data: json };
+  },
+
+  getMany: async (resource, params) => {
+    const query = {
+      filter: JSON.stringify({ ids: params.ids }),
+    };
+    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const { json } = await httpClient(url);
+    return { data: json };
+  },
+
+  getManyReference: async (resource, params) => {
+    const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
+    const query = {
+      sort: JSON.stringify([field, order]),
+      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+      filter: JSON.stringify({
+        ...params.filter,
+        [params.target]: params.id,
+      }),
+    };
+    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const { json, headers } = await httpClient(url);
+    return {
+      data: json,
+      // total: parseInt(headers.get("content-range").split("/").pop(), 10),
+      total: json.length,
+    };
+  },
+
+  create: async (resource, params) => {
+    const { json } = await httpClient(`${apiUrl}/${resource}`, {
+      method: "POST",
+      body: JSON.stringify(params.data),
+    });
+    return { data: json };
+  },
+
+  update: async (resource, params) => {
+    const url = `${apiUrl}/${resource}/${params.id}`;
+    const { json } = await httpClient(url, {
+      method: "PUT",
+      body: JSON.stringify(params.data),
+    });
+    return { data: json };
+  },
+
+  updateMany: async (resource, params) => {
+    const query = {
+      filter: JSON.stringify({ id: params.ids }),
+    };
+    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const { json } = await httpClient(url, {
+      method: "PUT",
+      body: JSON.stringify(params.data),
+    });
+    return { data: json };
+  },
+
+  delete: async (resource, params) => {
+    const url = `${apiUrl}/${resource}/${params.id}`;
+    const { json } = await httpClient(url, {
+      method: "DELETE",
+    });
+    return { data: json };
+  },
+
+  deleteMany: async (resource, params) => {
+    const query = {
+      filter: JSON.stringify({ id: params.ids }),
+    };
+    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const { json } = await httpClient(url, {
+      method: "DELETE",
+      body: JSON.stringify(params.data),
+    });
+    return { data: json };
+  },
 };
 
 export default dataProvider;

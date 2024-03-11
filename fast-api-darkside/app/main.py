@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from strawberry.fastapi import GraphQLRouter
 from tortoise.contrib.fastapi import register_tortoise
 
-from app.graphql.schema import schema  # GraphQLスキーマをインポート
 from app.routers import (
     client,
     member,
@@ -27,7 +25,7 @@ def create_app(config=TORTOISE_ORM):
         allow_methods=["*"],
         allow_headers=["*"],
 )
-    graphql_app = GraphQLRouter(schema)
+    # graphql_app = GraphQLRouter(schema)
 
     @app.on_event("startup")
     async def startup_event():
@@ -47,7 +45,7 @@ def create_app(config=TORTOISE_ORM):
     app.include_router(project_budget.router)
     app.include_router(project_member_assign.router)
     app.include_router(member_cost.router)
-    app.include_router(graphql_app, prefix="/graphql")  # GraphQLエンドポイントを追加
+    # app.include_router(graphql_app, prefix="/graphql")  # GraphQLエンドポイントを追加
 
     return app
 
