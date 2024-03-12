@@ -1,16 +1,14 @@
 import json
-from typing import List
 
 from fastapi import APIRouter, Query, Response
 
 import app.cruds.member as member_crud
 from app.models.member import MemberPydantic, MemberPydanticCreate
-from app.schemas.member import Member
 
 router = APIRouter()
 
 
-@router.get("/members", response_model=List[Member])
+@router.get("/members")
 async def get_members(response: Response,
                     sort: str = Query('["id","ASC"]'),
                     range: str = Query('[0,9]'),

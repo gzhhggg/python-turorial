@@ -4,6 +4,7 @@ import {
   ListGuesser,
 } from "react-admin";
 import dataProvider from "./dataProvider";
+// import simpleRestProvider from "ra-data-simple-rest";
 import { ClientList, ClientEdit, ClientCreate } from "./Client";
 import { MemberList, MemberEdit, MemberCreate } from "./Member";
 
@@ -23,7 +24,6 @@ const App = () => (
       edit={MemberEdit}
       create={MemberCreate}
     />
-    <Resource name="members" list={ListGuesser} />
     <Resource name="projects" list={ListGuesser} />
   </Admin>
 );

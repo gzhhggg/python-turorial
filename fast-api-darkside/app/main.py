@@ -20,7 +20,7 @@ def create_app(config=TORTOISE_ORM):
     app = FastAPI()
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],  # 実運用では具体的なオリジンに限定することが推奨されます
+        allow_origins=["*"],  # 実運用では具体的なオリジンに限定するみたい
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -38,7 +38,6 @@ def create_app(config=TORTOISE_ORM):
             generate_schemas=True,  # スタートアップ時にスキーマを自動生成
             add_exception_handlers=True,
         )
-
     app.include_router(client.router)
     app.include_router(project.router)
     app.include_router(member.router)

@@ -19,4 +19,4 @@ class Member(Model):
         return self.name
 
 MemberPydantic = pydantic_model_creator(Member, name="MemberPydantic")
-MemberPydanticCreate = pydantic_model_creator(Member, name="MemberPydanticCreate", include=["name", "client", "email", "phone"])
+MemberPydanticCreate = pydantic_model_creator(Member, name="MemberPydanticCreate", include=["name", "client_id", "email", "phone"])

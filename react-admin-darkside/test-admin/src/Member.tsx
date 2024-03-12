@@ -16,6 +16,7 @@ import {
   TextInput,
   EmailField,
   ReferenceField,
+  NumberInput,
 } from "react-admin";
 
 const MemberPagination = () => (
@@ -34,6 +35,10 @@ const ListActions = () => (
 const MemberFilters = [
   <SearchInput source="q" alwaysOn />,
 ];
+
+const MemberInput = () => {
+  
+}
 
 export const MemberList = () => (
   <List
@@ -56,7 +61,13 @@ export const MemberList = () => (
 export const MemberEdit = () => (
   <Edit>
     <SimpleForm>
+      <TextField source="id" />
+      <ReferenceField source="client_id" reference="clients" />
       <TextInput source="name" />
+      <TextInput source="email" />
+      <TextInput source="phone" />
+      <DateField source="created_at" />
+      <DateField source="deleted_at" />
     </SimpleForm>
   </Edit>
 );
@@ -68,3 +79,4 @@ export const MemberCreate = () => (
     </SimpleForm>
   </Create>
 );
+
