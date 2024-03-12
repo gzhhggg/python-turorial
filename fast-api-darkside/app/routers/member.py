@@ -1,14 +1,15 @@
 import json
+from typing import List
 
 from fastapi import APIRouter, Query, Response
 
 import app.cruds.member as member_crud
-from app.models.member import MemberPydantic, MemberPydanticCreate
+from app.schemas.member import Member, MemberCreate
 
 router = APIRouter()
 
 
-@router.get("/members")
+@router.get("/members", response_model=List[Member])
 async def get_members(response: Response,
                     sort: str = Query('["id","ASC"]'),
                     range: str = Query('[0,9]'),
@@ -31,18 +32,18 @@ async def get_members(response: Response,
     response.headers['Content-Range'] = f'{start}-{end}/{total}'
     return members
 
-@router.get("/members/{member_id}", response_model=MemberPydantic)
+@router.get("/members/{member_id}", response_model=Member)
 async def get_member(member_id: int):
     member = await member_crud.get_member(member_id)
     return member
 
-@router.post("/members", response_model=MemberPydantic)
-async def create_member(member: MemberPydanticCreate):
+@router.post("/members", response_model=Member)
+async def create_member(member: MemberCreate):
     created_member = await member_crud.create_member(member)
     return created_member
 
-@router.put("/members/{member_id}", response_model=MemberPydantic)
-async def update_member(member: MemberPydantic):
+@router.put("/members/{member_id}", response_model=Member)
+async def update_member(member: Member):
     updated_member = await member_crud.update_member(member)
     return updated_member
 

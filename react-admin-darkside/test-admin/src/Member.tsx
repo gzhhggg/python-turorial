@@ -17,6 +17,7 @@ import {
   EmailField,
   ReferenceField,
   NumberInput,
+  ReferenceInput,
 } from "react-admin";
 
 const MemberPagination = () => (
@@ -62,7 +63,7 @@ export const MemberEdit = () => (
   <Edit>
     <SimpleForm>
       <TextField source="id" />
-      <ReferenceField source="client_id" reference="clients" />
+      <ReferenceInput source="client_id" reference="clients" />
       <TextInput source="name" />
       <TextInput source="email" />
       <TextInput source="phone" />
@@ -75,7 +76,13 @@ export const MemberEdit = () => (
 export const MemberCreate = () => (
   <Create>
     <SimpleForm>
+      <TextField source="id" />
+      <ReferenceInput source="client_id" reference="clients" />
       <TextInput source="name" />
+      <TextInput source="email" />
+      <TextInput source="phone" />
+      <DateField source="created_at" />
+      <DateField source="deleted_at" />
     </SimpleForm>
   </Create>
 );
