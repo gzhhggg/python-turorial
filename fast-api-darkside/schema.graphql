@@ -1,0 +1,13 @@
+type ClientType {
+  id: Int!
+  name: String!
+  createdAt: DateTime!
+  deletedAt: DateTime
+}
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+type Query {
+  clients: [ClientType!]!
+}
